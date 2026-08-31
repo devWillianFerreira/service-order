@@ -37,4 +37,15 @@ class OrdemServico {
     required this.solucao,
     required this.valorMaoDeObra,
   });
+
+  bool get ordemAtrasada {
+    final dataAgora = DateTime.now();
+    return status != StatusOrdemServico.concluida &&
+        status != StatusOrdemServico.cancelada &&
+        dataLimite.isBefore(dataAgora);
+  }
+
+  bool get ordemUrgente {
+    return prioridade == Prioridade.urgente;
+  }
 }
