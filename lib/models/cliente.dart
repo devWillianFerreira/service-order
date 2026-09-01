@@ -14,4 +14,26 @@ class Cliente {
     required this.email,
     required this.endereco,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nome': nome,
+      'documento': documento,
+      'telefone': telefone,
+      'email': email,
+      'endereco': endereco,
+    };
+  }
+
+  factory Cliente.fromMap(Map<String, dynamic> map) {
+    return Cliente(
+      id: map['id'] as int?,
+      nome: map['nome'] as String,
+      documento: map['documento'] as String,
+      telefone: map['telefone'] as String,
+      email: map['email'] as String,
+      endereco: map['endereco'] as String,
+    );
+  }
 }
