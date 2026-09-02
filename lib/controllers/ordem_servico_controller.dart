@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:ordem_servico/database/database_service.dart';
-
+import '../core/states/ordem_servico_state_factory.dart';
 import '../models/ordem_servico.dart';
 import '../repositories/ordem_servico_repository.dart';
 
@@ -117,6 +117,22 @@ class OrdemServicoController extends ChangeNotifier {
 
       return false;
     }
+  }
+
+  Future<void> alterarStatus(
+    OrdemServico ordemServico,
+    StatusOrdemServico novoStatus,
+  ) async {
+    if (ordemServico.status == novoStatus) return;
+
+    final stateAtual = OrdemServicoStateFactory.criar(ordemServico.status);
+    final erroValidacao = stateAtual.validarTransicao(ordemServico, novoStatus);
+
+    if (erroValidacao != null) {
+      throw Exception(erroValidacao);
+    }
+
+    await salvarOrdemServico(ordemServico.copyWith(status: novoStatus));
   }
 
   Future<OrdemServico?> buscarOrdemServicoPorId(int id) async {
