@@ -1,7 +1,7 @@
 import 'package:ordem_servico/core/states/ordem_servico_state.dart';
 import 'package:ordem_servico/models/ordem_servico.dart';
 
-abstract class CanceladaState extends OrdemServicoState {
+class CanceladaState extends OrdemServicoState {
   @override
   StatusOrdemServico get status => StatusOrdemServico.cancelada;
 
