@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:ordem_servico/core/utils/ordem_servico_calculator.dart';
 import 'package:ordem_servico/database/database_service.dart';
 
 import '../models/item_ordem_servico.dart';
@@ -28,7 +29,14 @@ class ItemOrdemServicoController extends ChangeNotifier {
   int get quantidadeItens => _itens.length;
 
   double get totalItens {
-    return _itens.fold<double>(0, (total, item) => total + item.subtotal);
+    return OrdemServicoCalculator.calcularTotalItens(_itens);
+  }
+
+  double calcularValorTotal(double valorMaoDeObra) {
+    return OrdemServicoCalculator.calcularValorTotal(
+      valorMaoDeObra: valorMaoDeObra,
+      itens: _itens,
+    );
   }
 
   Future<void> carregarItensPorOrdemServico(int ordemServicoId) async {
