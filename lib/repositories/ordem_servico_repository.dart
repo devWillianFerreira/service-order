@@ -80,6 +80,32 @@ class OrdemServicoRepository {
     return resultado.map((map) => OrdemServico.fromMap(map)).toList();
   }
 
+  Future<List<OrdemServico>> listarPorCliente(int clienteId) async {
+    final database = await _databaseService.database;
+
+    final resultado = await database.query(
+      tabela,
+      where: 'cliente_id = ?',
+      whereArgs: [clienteId],
+      orderBy: 'data_abertura DESC',
+    );
+
+    return resultado.map((map) => OrdemServico.fromMap(map)).toList();
+  }
+
+  Future<List<OrdemServico>> listarPorEquipamento(int equipamentoId) async {
+    final database = await _databaseService.database;
+
+    final resultado = await database.query(
+      tabela,
+      where: 'equipamento_id = ?',
+      whereArgs: [equipamentoId],
+      orderBy: 'data_abertura DESC',
+    );
+
+    return resultado.map((map) => OrdemServico.fromMap(map)).toList();
+  }
+
   Future<List<OrdemServico>> listarPorPrioridade(Prioridade prioridade) async {
     final database = await _databaseService.database;
 
