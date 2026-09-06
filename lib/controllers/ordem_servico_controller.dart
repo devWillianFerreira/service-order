@@ -90,6 +90,39 @@ class OrdemServicoController extends ChangeNotifier {
     return _ordensServico.where((os) => os.ordemAtrasada).length;
   }
 
+  Future<double> calcularValorTotalServicos() async {
+    _errorMessage = null;
+
+    try {
+      double valorTotal = 0;
+
+      for (final ordemServico in _ordensServico) {
+        if (ordemServico.id == null) {
+          continue;
+        }
+
+        final itens = await _itemOrdemServicoRepository.listarPorOrdemServico(
+          ordemServico.id!,
+        );
+
+        final valorOrdemServico = OrdemServicoCalculator.calcularValorTotal(
+          valorMaoDeObra: ordemServico.valorMaoDeObra,
+          itens: itens,
+        );
+
+        valorTotal += valorOrdemServico;
+      }
+
+      return valorTotal;
+    } catch (e) {
+      _errorMessage = 'Não foi possível calcular o valor total dos serviços.';
+
+      notifyListeners();
+
+      return 0;
+    }
+  }
+
   Future<void> carregarOrdensServico() async {
     _carregando = true;
     _errorMessage = null;
@@ -99,10 +132,6 @@ class OrdemServicoController extends ChangeNotifier {
       _ordensServico = await _repository.listar();
     } catch (e) {
       _errorMessage = 'Não foi possível carregar as ordens de serviço.';
-
-      if (kDebugMode) {
-        debugPrint('Erro ao carregar ordens de serviço: $e');
-      }
     } finally {
       _carregando = false;
       notifyListeners();
