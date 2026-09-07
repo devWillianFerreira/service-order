@@ -21,12 +21,13 @@ class _ClientesPageState extends State<ClientesPage> {
     });
   }
 
-  Future<void> _abrirCadastroCliente() async {
-    final cadastrou = await Navigator.of(
-      context,
-    ).push<bool>(MaterialPageRoute(builder: (_) => const ClienteFormPage()));
+  // Recebe o cliente opcional: se vier null é cadastro, se vier preenchido é edição
+  Future<void> _abrirFormularioCliente([Cliente? cliente]) async {
+    final atualizou = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(builder: (_) => ClienteFormPage(cliente: cliente)),
+    );
 
-    if (cadastrou == true && mounted) {
+    if (atualizou == true && mounted) {
       context.read<ClienteController>().carregarClientes();
     }
   }
@@ -37,7 +38,7 @@ class _ClientesPageState extends State<ClientesPage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _abrirCadastroCliente,
+        onPressed: () => _abrirFormularioCliente(),
         icon: const Icon(Icons.person_add_outlined),
         label: const Text('Novo cliente'),
       ),
@@ -132,7 +133,7 @@ class _ClientesPageState extends State<ClientesPage> {
           ),
         ),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () {},
+        onTap: () => _abrirFormularioCliente(cliente),
       ),
     );
   }
