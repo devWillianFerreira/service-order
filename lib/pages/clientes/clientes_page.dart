@@ -21,7 +21,6 @@ class _ClientesPageState extends State<ClientesPage> {
     });
   }
 
-  // Recebe o cliente opcional: se vier null é cadastro, se vier preenchido é edição
   Future<void> _abrirFormularioCliente([Cliente? cliente]) async {
     final atualizou = await Navigator.of(context).push<bool>(
       MaterialPageRoute(builder: (_) => ClienteFormPage(cliente: cliente)),
@@ -29,6 +28,47 @@ class _ClientesPageState extends State<ClientesPage> {
 
     if (atualizou == true && mounted) {
       context.read<ClienteController>().carregarClientes();
+    }
+  }
+
+  Future<void> _confirmarExclusao(Cliente cliente) async {
+    final confirmar = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Excluir cliente'),
+        content: Text('Deseja realmente excluir ${cliente.nome}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmar != true || !mounted) return;
+
+    final controller = context.read<ClienteController>();
+    // Certifique-se de que o método no seu controller recebe o id ou o cliente
+    final sucesso = await controller.excluirCliente(cliente.id!);
+
+    if (!mounted) return;
+
+    if (sucesso) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cliente excluído com sucesso!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(controller.errorMessage ?? 'Erro ao excluir cliente.'),
+        ),
+      );
     }
   }
 
@@ -132,7 +172,11 @@ class _ClientesPageState extends State<ClientesPage> {
             ],
           ),
         ),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete_outline, color: Colors.red),
+          tooltip: 'Excluir',
+          onPressed: () => _confirmarExclusao(cliente),
+        ),
         onTap: () => _abrirFormularioCliente(cliente),
       ),
     );
