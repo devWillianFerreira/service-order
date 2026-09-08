@@ -11,15 +11,11 @@ class ClienteController extends ChangeNotifier {
   final ClienteRepository _repository;
 
   List<Cliente> _clientes = [];
-
   bool _isLoading = false;
-
   String? _errorMessage;
 
   List<Cliente> get clientes => List.unmodifiable(_clientes);
-
   bool get isLoading => _isLoading;
-
   String? get errorMessage => _errorMessage;
 
   Future<void> carregarClientes() async {
@@ -49,15 +45,12 @@ class ClienteController extends ChangeNotifier {
       }
 
       await carregarClientes();
-
       return true;
     } catch (e) {
       _errorMessage = cliente.id == null
           ? 'Não foi possível cadastrar o cliente.'
           : 'Não foi possível atualizar o cliente.';
-
       notifyListeners();
-
       return false;
     }
   }
@@ -68,36 +61,12 @@ class ClienteController extends ChangeNotifier {
 
     try {
       await _repository.excluir(id);
-
       await carregarClientes();
-
       return true;
     } catch (e) {
       _errorMessage = 'Não foi possível excluir o cliente.';
-
       notifyListeners();
-
       return false;
     }
-  }
-
-  Future<Cliente?> buscarClientePorId(int id) async {
-    _errorMessage = null;
-    notifyListeners();
-
-    try {
-      return await _repository.buscarPorId(id);
-    } catch (e) {
-      _errorMessage = 'Não foi possível encontrar o cliente.';
-
-      notifyListeners();
-
-      return null;
-    }
-  }
-
-  void limparErro() {
-    _errorMessage = null;
-    notifyListeners();
   }
 }

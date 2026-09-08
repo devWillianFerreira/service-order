@@ -11,9 +11,7 @@ class ClienteRepository {
 
   Future<int> inserir(Cliente cliente) async {
     final database = await _databaseService.database;
-
-    final dados = cliente.toMap();
-    dados.remove('id');
+    final dados = cliente.toMap()..remove('id');
 
     return database.insert(
       tabela,
@@ -24,27 +22,9 @@ class ClienteRepository {
 
   Future<List<Cliente>> listar() async {
     final database = await _databaseService.database;
-
     final resultado = await database.query(tabela, orderBy: 'nome ASC');
 
     return resultado.map((map) => Cliente.fromMap(map)).toList();
-  }
-
-  Future<Cliente?> buscarPorId(int id) async {
-    final database = await _databaseService.database;
-
-    final resultado = await database.query(
-      tabela,
-      where: 'id = ?',
-      whereArgs: [id],
-      limit: 1,
-    );
-
-    if (resultado.isEmpty) {
-      return null;
-    }
-
-    return Cliente.fromMap(resultado.first);
   }
 
   Future<int> atualizar(Cliente cliente) async {
@@ -54,11 +34,9 @@ class ClienteRepository {
 
     final database = await _databaseService.database;
 
-    final dados = cliente.toMap();
-
     return database.update(
       tabela,
-      dados,
+      cliente.toMap(),
       where: 'id = ?',
       whereArgs: [cliente.id],
     );
@@ -66,7 +44,6 @@ class ClienteRepository {
 
   Future<int> excluir(int id) async {
     final database = await _databaseService.database;
-
     return database.delete(tabela, where: 'id = ?', whereArgs: [id]);
   }
 }
