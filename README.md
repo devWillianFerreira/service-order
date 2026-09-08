@@ -128,26 +128,31 @@ Essa organização permite reduzir o acoplamento entre as diferentes partes da a
 ## Estrutura final do projeto
 
 ```text
+```text
 ordem_servico/
 ├── lib/
+│   ├── controllers/               # Controllers e gerenciamento de estado
 │   ├── core/
 │   │   ├── states/                # Implementação do State Pattern para OS
-│   │   └── utils/                 # Calculadoras financeiras e formatadores
-│   ├── database/                  # Configuração e Singleton do SQLite
-│   ├── models/                    # Models: Cliente, Técnico, Equipamento, OS, Item
-│   ├── repositories/              # Camada de persistência relacional
-│   ├── controllers/               # State management com ChangeNotifier
+│   │   └── utils/                 # Utilitários e cálculos financeiros
+│   ├── database/                  # Configuração e acesso ao banco SQLite
+│   ├── models/                    # Models do sistema
 │   ├── pages/
-|   |   ├── login/                 # Tela de autenticação / login
-│   │   ├── auth/                  
-│   │   ├── dashboard/             # Painel com cartões de indicadores
-│   │   ├── clientes/              # Listagem e formulário de clientes
-│   │   ├── tecnicos/              # Listagem e formulário de técnicos
-│   │   ├── equipamentos/          # Listagem e formulário de equipamentos
-│   │   └── ordens_servico/        # Lista, busca/filtros, detalhes e formulário com foto
-│   └── main.dart                  # Ponto de entrada e MultiProvider
-├── pubspec.yaml
-└── README.md
+│   │   ├── auth/                  # Controle do estado da autenticação
+│   │   ├── login/                 # Tela de login
+│   │   ├── dashboard/             # Dashboard e indicadores
+│   │   ├── clientes/              # Gerenciamento de clientes
+│   │   ├── tecnicos/              # Gerenciamento de técnicos
+│   │   ├── equipamentos/          # Gerenciamento de equipamentos
+│   │   └── ordens_servico/        # Gerenciamento das Ordens de Serviço
+│   ├── repositories/              # Camada de acesso e persistência de dados
+│   ├── services/                  # Serviços da aplicação
+│   ├── widgets/                   # Componentes reutilizáveis da interface
+│   ├── firebase_options.dart      # Configuração do Firebase
+│   └── main.dart                  # Ponto de entrada da aplicação
+│
+├── pubspec.yaml                   # Dependências do projeto
+└── README.md                      # Documentação principal
 ```
 
 ---
