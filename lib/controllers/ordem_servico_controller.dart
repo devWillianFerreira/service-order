@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:ordem_servico/database/database_service.dart';
 import 'package:ordem_servico/repositories/item_ordem_servico_repository.dart';
 import '../core/states/ordem_servico_state_factory.dart';
+import '../core/utils/ordem_servico_calculator.dart';
 import '../models/ordem_servico.dart';
-import '../repositories/ordem_servico_repository.dart';
 import '../models/tecnico.dart';
 import '../repositories/equipamento_repository.dart';
+import '../repositories/ordem_servico_repository.dart';
 import '../repositories/tecnico_repository.dart';
-import '../core/utils/ordem_servico_calculator.dart';
 
 class OrdemServicoController extends ChangeNotifier {
   OrdemServicoController({
@@ -33,62 +33,31 @@ class OrdemServicoController extends ChangeNotifier {
   final ItemOrdemServicoRepository _itemOrdemServicoRepository;
 
   List<OrdemServico> _ordensServico = [];
-
   bool _carregando = false;
-
   String? _errorMessage;
 
   List<OrdemServico> get ordensServico => List.unmodifiable(_ordensServico);
-
   bool get carregando => _carregando;
-
   String? get errorMessage => _errorMessage;
 
+  // Indicadores para o Dashboard
   int get quantidadeOrdens => _ordensServico.length;
-
-  int get quantidadeEmAtendimento {
-    return _ordensServico
-        .where((os) => os.status == StatusOrdemServico.emAtendimento)
-        .length;
-  }
-
-  int get quantidadeConcluidas {
-    return _ordensServico
-        .where((os) => os.status == StatusOrdemServico.concluida)
-        .length;
-  }
-
-  int get quantidadeCanceladas {
-    return _ordensServico
-        .where((os) => os.status == StatusOrdemServico.cancelada)
-        .length;
-  }
-
-  int get quantidadeAbertas {
-    return _ordensServico
-        .where((os) => os.status == StatusOrdemServico.aberta)
-        .length;
-  }
-
-  int get quantidadeUrgentes {
-    return _ordensServico.where((os) => os.ordemUrgente).length;
-  }
-
-  List<OrdemServico> porStatus(StatusOrdemServico status) {
-    return _ordensServico.where((os) => os.status == status).toList();
-  }
-
-  List<OrdemServico> porPrioridade(Prioridade prioridade) {
-    return _ordensServico.where((os) => os.prioridade == prioridade).toList();
-  }
-
-  List<OrdemServico> porTecnico(int tecnicoId) {
-    return _ordensServico.where((os) => os.tecnicoId == tecnicoId).toList();
-  }
-
-  int get quantidadeAtrasadas {
-    return _ordensServico.where((os) => os.ordemAtrasada).length;
-  }
+  int get quantidadeAbertas => _ordensServico
+      .where((os) => os.status == StatusOrdemServico.aberta)
+      .length;
+  int get quantidadeEmAtendimento => _ordensServico
+      .where((os) => os.status == StatusOrdemServico.emAtendimento)
+      .length;
+  int get quantidadeConcluidas => _ordensServico
+      .where((os) => os.status == StatusOrdemServico.concluida)
+      .length;
+  int get quantidadeCanceladas => _ordensServico
+      .where((os) => os.status == StatusOrdemServico.cancelada)
+      .length;
+  int get quantidadeUrgentes =>
+      _ordensServico.where((os) => os.ordemUrgente).length;
+  int get quantidadeAtrasadas =>
+      _ordensServico.where((os) => os.ordemAtrasada).length;
 
   Future<double> calcularValorTotalServicos() async {
     _errorMessage = null;
@@ -97,9 +66,7 @@ class OrdemServicoController extends ChangeNotifier {
       double valorTotal = 0;
 
       for (final ordemServico in _ordensServico) {
-        if (ordemServico.id == null) {
-          continue;
-        }
+        if (ordemServico.id == null) continue;
 
         final itens = await _itemOrdemServicoRepository.listarPorOrdemServico(
           ordemServico.id!,
@@ -116,9 +83,7 @@ class OrdemServicoController extends ChangeNotifier {
       return valorTotal;
     } catch (e) {
       _errorMessage = 'Não foi possível calcular o valor total dos serviços.';
-
       notifyListeners();
-
       return 0;
     }
   }
@@ -148,7 +113,6 @@ class OrdemServicoController extends ChangeNotifier {
       if (erroRelacionamentos != null) {
         _errorMessage = erroRelacionamentos;
         notifyListeners();
-
         return false;
       }
 
@@ -159,46 +123,13 @@ class OrdemServicoController extends ChangeNotifier {
       }
 
       await carregarOrdensServico();
-
       return true;
     } catch (e) {
       _errorMessage = ordemServico.id == null
           ? 'Não foi possível cadastrar a ordem de serviço.'
           : 'Não foi possível atualizar a ordem de serviço.';
-
       notifyListeners();
-
       return false;
-    }
-  }
-
-  Future<List<OrdemServico>> buscarOrdensPorCliente(int clienteId) async {
-    _errorMessage = null;
-
-    try {
-      return await _repository.listarPorCliente(clienteId);
-    } catch (e) {
-      _errorMessage = 'Não foi possível buscar as ordens do cliente.';
-
-      notifyListeners();
-
-      return [];
-    }
-  }
-
-  Future<List<OrdemServico>> buscarOrdensPorEquipamento(
-    int equipamentoId,
-  ) async {
-    _errorMessage = null;
-
-    try {
-      return await _repository.listarPorEquipamento(equipamentoId);
-    } catch (e) {
-      _errorMessage = 'Não foi possível buscar as ordens do equipamento.';
-
-      notifyListeners();
-
-      return [];
     }
   }
 
@@ -208,15 +139,11 @@ class OrdemServicoController extends ChangeNotifier {
 
     try {
       await _repository.excluir(id);
-
       await carregarOrdensServico();
-
       return true;
     } catch (e) {
       _errorMessage = 'Não foi possível excluir a ordem de serviço.';
-
       notifyListeners();
-
       return false;
     }
   }
@@ -225,23 +152,18 @@ class OrdemServicoController extends ChangeNotifier {
     OrdemServico ordemServico,
     StatusOrdemServico novoStatus,
   ) async {
-    if (ordemServico.status == novoStatus) {
-      return true;
-    }
+    if (ordemServico.status == novoStatus) return true;
 
     final stateAtual = OrdemServicoStateFactory.criar(ordemServico.status);
-
     final erroValidacao = stateAtual.validarTransicao(ordemServico, novoStatus);
 
     if (erroValidacao != null) {
       _errorMessage = erroValidacao;
       notifyListeners();
-
       return false;
     }
 
     final ordemAtualizada = ordemServico.copyWith(status: novoStatus);
-
     return salvarOrdemServico(ordemAtualizada);
   }
 
@@ -253,9 +175,7 @@ class OrdemServicoController extends ChangeNotifier {
       return await _repository.buscarPorId(id);
     } catch (e) {
       _errorMessage = 'Não foi possível encontrar a ordem de serviço.';
-
       notifyListeners();
-
       return null;
     }
   }
@@ -271,7 +191,6 @@ class OrdemServicoController extends ChangeNotifier {
       if (ordemServico == null) {
         _errorMessage = 'A ordem de serviço não foi encontrada.';
         notifyListeners();
-
         return null;
       }
 
@@ -286,9 +205,7 @@ class OrdemServicoController extends ChangeNotifier {
     } catch (e) {
       _errorMessage =
           'Não foi possível calcular o valor total da ordem de serviço.';
-
       notifyListeners();
-
       return null;
     }
   }
@@ -321,25 +238,5 @@ class OrdemServicoController extends ChangeNotifier {
     }
 
     return null;
-  }
-
-  Future<OrdemServico?> buscarOrdemServicoPorNumero(String numero) async {
-    _errorMessage = null;
-    notifyListeners();
-
-    try {
-      return await _repository.buscarPorNumero(numero);
-    } catch (e) {
-      _errorMessage = 'Não foi possível encontrar a ordem de serviço.';
-
-      notifyListeners();
-
-      return null;
-    }
-  }
-
-  void limparErro() {
-    _errorMessage = null;
-    notifyListeners();
   }
 }
