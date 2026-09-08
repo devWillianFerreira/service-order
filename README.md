@@ -12,11 +12,11 @@
 
 <p align="center">
   <a href="https://flutter.dev/" title="Flutter">
-    <img src="thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Google-flutter-logo.svg/1920px-Google-flutter-logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" alt="Flutter" height="24px">
+   Flutter
   </a>
   +
   <a href="https://dart.dev/" title="Dart">
-    <img src="https://commons.wikimedia.org/wiki/File:Google-flutter-logo.svg#/media/File:Google-flutter-logo.svg" alt="Dart" height="24px">
+    Dart
   </a>
   +
   <a href="https://www.sqlite.org/" title="SQLite">
