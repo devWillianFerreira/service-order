@@ -91,6 +91,7 @@ Essa organização permite reduzir o acoplamento entre as diferentes partes da a
 
 * Dart
 * Flutter
+* Firebase 
 * SQLite
 * sqflite
 * sqflite_common_ffi
