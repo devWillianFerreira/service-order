@@ -11,11 +11,7 @@ class ItemOrdemServicoRepository {
 
   Future<int> inserir(ItemOrdemServico item) async {
     final database = await _databaseService.database;
-
-    final dados = item.toMap();
-
-    // O ID será criado automaticamente.
-    dados.remove('id');
+    final dados = item.toMap()..remove('id');
 
     return database.insert(
       tabela,
@@ -39,32 +35,13 @@ class ItemOrdemServicoRepository {
     return resultado.map((map) => ItemOrdemServico.fromMap(map)).toList();
   }
 
-  Future<ItemOrdemServico?> buscarPorId(int id) async {
-    final database = await _databaseService.database;
-
-    final resultado = await database.query(
-      tabela,
-      where: 'id = ?',
-      whereArgs: [id],
-      limit: 1,
-    );
-
-    if (resultado.isEmpty) {
-      return null;
-    }
-
-    return ItemOrdemServico.fromMap(resultado.first);
-  }
-
   Future<int> atualizar(ItemOrdemServico item) async {
     if (item.id == null) {
       throw ArgumentError('Não é possível atualizar um item sem ID.');
     }
 
     final database = await _databaseService.database;
-
-    final dados = item.toMap();
-    dados.remove('id');
+    final dados = item.toMap()..remove('id');
 
     return database.update(
       tabela,
@@ -76,7 +53,6 @@ class ItemOrdemServicoRepository {
 
   Future<int> excluir(int id) async {
     final database = await _databaseService.database;
-
     return database.delete(tabela, where: 'id = ?', whereArgs: [id]);
   }
 }

@@ -15,18 +15,12 @@ class ItemOrdemServicoController extends ChangeNotifier {
   final ItemOrdemServicoRepository _repository;
 
   List<ItemOrdemServico> _itens = [];
-
   bool _carregando = false;
-
   String? _errorMessage;
 
   List<ItemOrdemServico> get itens => List.unmodifiable(_itens);
-
   bool get carregando => _carregando;
-
   String? get errorMessage => _errorMessage;
-
-  int get quantidadeItens => _itens.length;
 
   double get totalItens {
     return OrdemServicoCalculator.calcularTotalItens(_itens);
@@ -66,7 +60,6 @@ class ItemOrdemServicoController extends ChangeNotifier {
       }
 
       await carregarItensPorOrdemServico(item.ordemServicoId);
-
       return true;
     } catch (e) {
       _errorMessage = item.id == null
@@ -74,7 +67,6 @@ class ItemOrdemServicoController extends ChangeNotifier {
           : 'Não foi possível atualizar o item da ordem de serviço.';
 
       notifyListeners();
-
       return false;
     }
   }
@@ -85,41 +77,12 @@ class ItemOrdemServicoController extends ChangeNotifier {
 
     try {
       await _repository.excluir(id);
-
       await carregarItensPorOrdemServico(ordemServicoId);
-
       return true;
     } catch (e) {
       _errorMessage = 'Não foi possível excluir o item da ordem de serviço.';
-
       notifyListeners();
-
       return false;
     }
-  }
-
-  Future<ItemOrdemServico?> buscarItemPorId(int id) async {
-    _errorMessage = null;
-    notifyListeners();
-
-    try {
-      return await _repository.buscarPorId(id);
-    } catch (e) {
-      _errorMessage = 'Não foi possível encontrar o item da ordem de serviço.';
-
-      notifyListeners();
-
-      return null;
-    }
-  }
-
-  void limparItens() {
-    _itens = [];
-    notifyListeners();
-  }
-
-  void limparErro() {
-    _errorMessage = null;
-    notifyListeners();
   }
 }

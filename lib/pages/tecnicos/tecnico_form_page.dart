@@ -51,7 +51,7 @@ class _TecnicoFormPageState extends State<TecnicoFormPage> {
     setState(() => _salvando = true);
 
     final tecnico = Tecnico(
-      id: widget.tecnico?.id, // Mantém o ID na edição
+      id: widget.tecnico?.id,
       nome: _nomeController.text.trim(),
       contato: _contatoController.text.trim(),
       especialidade: _especialidadeController.text.trim(),

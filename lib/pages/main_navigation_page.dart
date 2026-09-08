@@ -81,8 +81,6 @@ class _MainNavigationPageState extends State<MainNavigationPage>
                 child: TabBar(
                   controller: _tabController,
 
-                  // Em telas pequenas permite rolagem horizontal.
-                  // Em telas maiores distribui melhor os itens.
                   isScrollable: telaPequena,
                   tabAlignment: telaPequena
                       ? TabAlignment.start

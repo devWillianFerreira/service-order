@@ -38,7 +38,6 @@ class _EquipamentoFormPageState extends State<EquipamentoFormPage> {
     _numeroSerieController = TextEditingController(text: eq?.numeroSerie ?? '');
     _observacoesController = TextEditingController(text: eq?.observacoes ?? '');
 
-    // Garante que a lista de clientes esteja disponível para o select
     Future.microtask(() {
       if (mounted) context.read<ClienteController>().carregarClientes();
     });
@@ -107,7 +106,6 @@ class _EquipamentoFormPageState extends State<EquipamentoFormPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Seleção do Cliente dono do equipamento
               DropdownButtonFormField<int>(
                 initialValue: _clienteIdSelecionado,
                 decoration: const InputDecoration(

@@ -27,7 +27,6 @@ class _ClienteFormPageState extends State<ClienteFormPage> {
   @override
   void initState() {
     super.initState();
-    // Preenche os campos se estiver editando, ou deixa vazio se for novo
     final c = widget.cliente;
     _nome = TextEditingController(text: c?.nome ?? '');
     _documento = TextEditingController(text: c?.documento ?? '');
@@ -52,7 +51,7 @@ class _ClienteFormPageState extends State<ClienteFormPage> {
     setState(() => _salvando = true);
 
     final clienteAtualizado = Cliente(
-      id: widget.cliente?.id, // Mantém o ID original na edição
+      id: widget.cliente?.id,
       nome: _nome.text.trim(),
       documento: _documento.text.trim(),
       telefone: _telefone.text.trim(),
