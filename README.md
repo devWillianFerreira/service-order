@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://flutter.dev/" title="Flutter">
-    <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59d587711b45.png" alt="Flutter" height="24px">
+    <img src="https://commons.wikimedia.org/wiki/File:Google-flutter-logo.svg#/media/File:Google-flutter-logo.svg" alt="Flutter" height="24px">
   </a>
   +
   <a href="https://dart.dev/" title="Dart">
@@ -124,270 +124,28 @@ Essa organização permite reduzir o acoplamento entre as diferentes partes da a
 
 ---
 
-## Dashboard
-
-O Dashboard apresenta uma visão geral da situação operacional do sistema.
-
-Entre os indicadores disponíveis estão:
-
-| Indicador       | Descrição                                          |
-| --------------- | -------------------------------------------------- |
-| Total de Ordens | Quantidade total de Ordens de Serviço cadastradas. |
-| Abertas         | Ordens aguardando início do atendimento.           |
-| Em Atendimento  | Ordens atualmente em execução.                     |
-| Concluídas      | Ordens com o serviço finalizado.                   |
-| Canceladas      | Ordens que foram canceladas.                       |
-| Atrasadas       | Ordens cujo prazo de atendimento foi ultrapassado. |
-| Urgentes        | Ordens classificadas com prioridade elevada.       |
-| Faturamento     | Valor financeiro total das Ordens de Serviço.      |
-
----
-
-## Clientes
-
-O módulo de clientes permite realizar o gerenciamento completo dos dados dos clientes.
-
-As informações cadastradas incluem:
-
-* Nome;
-* CPF ou CNPJ;
-* Telefone;
-* E-mail;
-* Endereço.
-
-As operações disponíveis seguem o modelo CRUD:
-
-| Operação | Descrição                          |
-| -------- | ---------------------------------- |
-| Create   | Cadastro de novos clientes.        |
-| Read     | Consulta e listagem de clientes.   |
-| Update   | Atualização dos dados cadastrados. |
-| Delete   | Remoção de clientes.               |
-
----
-
-## Técnicos
-
-O sistema permite cadastrar e gerenciar os profissionais responsáveis pelos atendimentos técnicos.
-
-Cada técnico possui informações como:
-
-* Nome;
-* Contato;
-* Especialidade;
-* Status.
-
-O status permite identificar se o técnico está:
-
-```text
-Ativo
-Inativo
-```
-
-Os técnicos podem ser associados às Ordens de Serviço como responsáveis pelo atendimento.
-
----
-
-## Equipamentos
-
-Os equipamentos são cadastrados e vinculados aos respectivos clientes proprietários.
-
-Cada equipamento pode possuir informações como:
-
-* Tipo;
-* Marca;
-* Modelo;
-* Número de série.
-
-A relação entre clientes e equipamentos permite associar corretamente uma Ordem de Serviço ao equipamento que necessita de atendimento.
-
-```text
-Cliente
-   │
-   ├── Equipamento 1
-   │
-   ├── Equipamento 2
-   │
-   └── Equipamento 3
-```
-
----
-
-## Ordens de Serviço
-
-As Ordens de Serviço representam o principal fluxo operacional da aplicação.
-
-Durante o cadastro e gerenciamento de uma OS, podem ser controladas informações relacionadas a:
-
-* Cliente;
-* Equipamento;
-* Técnico responsável;
-* Prioridade;
-* Descrição do serviço;
-* Prazo;
-* Status;
-* Valor da mão de obra;
-* Valor total.
-
-O sistema permite acompanhar a Ordem de Serviço durante todas as etapas do atendimento.
-
----
-
-## Ciclo de Vida da Ordem de Serviço
-
-O ciclo de vida das Ordens de Serviço é controlado utilizando o **State Pattern**.
-
-Os estados disponíveis são:
-
-```text
-                 ┌──────────────┐
-                 │    Aberta    │
-                 └──────┬───────┘
-                        │
-                        ▼
-              ┌──────────────────────┐
-              │   Em Atendimento    │
-              └──────────┬───────────┘
-                         │
-                         ▼
-                  ┌─────────────┐
-                  │ Concluída   │
-                  └─────────────┘
-```
-
-Dependendo das regras estabelecidas pelo sistema, uma Ordem de Serviço também pode ser cancelada.
-
-```text
-Aberta ─────────────────► Cancelada
-
-Em Atendimento ─────────► Cancelada
-```
-
-As transições entre estados são validadas para impedir alterações inválidas no ciclo de atendimento.
-
-O **Factory Method** é utilizado para determinar e criar a implementação correspondente ao estado atual da Ordem de Serviço.
-
----
-
-## Imagens e Evidências
-
-O sistema permite registrar imagens relacionadas às Ordens de Serviço.
-
-Esse recurso pode ser utilizado para documentar:
-
-* Estado do equipamento antes do atendimento;
-* Problemas identificados;
-* Processo de manutenção;
-* Resultado final do serviço.
-
-As imagens podem ser obtidas através de:
-
-```text
-Câmera
-   │
-   ▼
-image_picker
-   │
-   ├── Galeria
-   │
-   └── Sistema de Arquivos
-```
-
-As evidências ficam associadas à Ordem de Serviço correspondente.
-
----
-
-## Busca e Filtros
-
-A aplicação disponibiliza mecanismos de busca dinâmica para facilitar a localização das Ordens de Serviço.
-
-A busca pode ser realizada por:
-
-* Número da OS;
-* Cliente;
-* Equipamento;
-* Técnico.
-
-Também podem ser utilizados filtros combinados para organizar os resultados de acordo com as necessidades do usuário.
-
----
-
-## Controle Financeiro
-
-As Ordens de Serviço possuem informações relacionadas aos valores cobrados pelos serviços.
-
-Entre os dados financeiros controlados estão:
-
-* Valor da mão de obra;
-* Valores relacionados aos serviços;
-* Valor total da Ordem de Serviço.
-
-Os cálculos financeiros são centralizados em classes utilitárias para evitar duplicação de lógica e manter as regras de cálculo separadas da interface.
-
----
-
-## Persistência Local
-
-A aplicação utiliza o **SQLite** como banco de dados local.
-
-A persistência é implementada utilizando:
-
-```text
-sqflite
-sqflite_common_ffi
-```
-
-O `sqflite` é utilizado para plataformas compatíveis com o pacote principal, enquanto o `sqflite_common_ffi` permite a utilização do SQLite em ambientes Desktop.
-
-A inicialização do banco de dados utiliza o **Singleton Pattern**, garantindo um ponto centralizado de acesso à instância do banco.
-
-```text
-Aplicação
-    │
-    ▼
-Database Singleton
-    │
-    ▼
-SQLite Database
-```
-
----
-
 ## Estrutura final do projeto
 
 ```text
 ordem_servico/
 ├── lib/
-│   │
 │   ├── core/
-│   │   ├── states/                # State Pattern para ciclo da OS
-│   │   └── utils/                 # Utilitários e cálculos financeiros
-│   │
+│   │   ├── states/                # Implementação do State Pattern para OS
+│   │   └── utils/                 # Calculadoras financeiras e formatadores
 │   ├── database/                  # Configuração e Singleton do SQLite
-│   │
-│   ├── models/                    # Models do sistema
-│   │   ├── cliente.dart
-│   │   ├── tecnico.dart
-│   │   ├── equipamento.dart
-│   │   ├── ordem_servico.dart
-│   │   └── item.dart
-│   │
-│   ├── repositories/              # Repository Pattern
-│   │
-│   ├── controllers/               # ChangeNotifier / gerenciamento de estado
-│   │
+│   ├── models/                    # Models: Cliente, Técnico, Equipamento, OS, Item
+│   ├── repositories/              # Camada de persistência relacional
+│   ├── controllers/               # State management com ChangeNotifier
 │   ├── pages/
-│   │   ├── auth/                  # Autenticação
-│   │   ├── dashboard/             # Dashboard e indicadores
-│   │   ├── clientes/              # Clientes
-│   │   ├── tecnicos/              # Técnicos
-│   │   ├── equipamentos/          # Equipamentos
-│   │   └── ordens_servico/        # Gerenciamento das OS
-│   │
+|   |   ├── login/                 # Tela de autenticação / login
+│   │   ├── auth/                  
+│   │   ├── dashboard/             # Painel com cartões de indicadores
+│   │   ├── clientes/              # Listagem e formulário de clientes
+│   │   ├── tecnicos/              # Listagem e formulário de técnicos
+│   │   ├── equipamentos/          # Listagem e formulário de equipamentos
+│   │   └── ordens_servico/        # Lista, busca/filtros, detalhes e formulário com foto
 │   └── main.dart                  # Ponto de entrada e MultiProvider
-│
 ├── pubspec.yaml
-│
 └── README.md
 ```
 
@@ -461,97 +219,6 @@ Caso necessário, execute o projeto em um dispositivo específico:
 ```bash
 flutter run -d ID_DO_DISPOSITIVO
 ```
-
----
-
-## Padrões de Projeto
-
-### Repository Pattern
-
-O acesso aos dados é isolado em classes de repositório.
-
-Essa abordagem separa a lógica de persistência da lógica de apresentação.
-
-```text
-Controller
-    │
-    ▼
-Repository
-    │
-    ▼
-SQLite
-```
-
-Os repositórios são responsáveis pelas operações relacionadas aos dados, como:
-
-* Inserção;
-* Consulta;
-* Atualização;
-* Exclusão.
-
----
-
-### Singleton Pattern
-
-Utilizado para garantir uma única instância responsável pela conexão e inicialização do banco SQLite.
-
-```text
-Application
-     │
-     ▼
-Database Singleton
-     │
-     ▼
-SQLite Instance
-```
-
----
-
-### State Pattern
-
-Utilizado para controlar o comportamento da Ordem de Serviço de acordo com seu status atual.
-
-Cada estado possui regras específicas relacionadas às transições permitidas.
-
-Isso evita alterações inválidas e mantém o fluxo da OS consistente.
-
----
-
-### Factory Method
-
-Utilizado para determinar dinamicamente qual implementação de estado deve ser utilizada com base no status atual da Ordem de Serviço.
-
-```text
-Status da OS
-     │
-     ▼
-State Factory
-     │
-     ├── AbertaState
-     ├── EmAtendimentoState
-     ├── ConcluidaState
-     └── CanceladaState
-```
-
----
-
-## Objetivo Acadêmico
-
-Este projeto foi desenvolvido com finalidade acadêmica para aplicação prática de conceitos relacionados ao desenvolvimento de aplicações multiplataforma.
-
-Os principais conceitos explorados incluem:
-
-* Desenvolvimento Desktop e Mobile;
-* Flutter e Dart;
-* Programação Orientada a Objetos;
-* Gerenciamento de estado;
-* Persistência local;
-* Banco de dados relacional;
-* Arquitetura em camadas;
-* Repository Pattern;
-* Singleton Pattern;
-* State Pattern;
-* Factory Method.
 
 ---
 
