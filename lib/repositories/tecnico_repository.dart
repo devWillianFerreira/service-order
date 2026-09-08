@@ -11,9 +11,7 @@ class TecnicoRepository {
 
   Future<int> inserir(Tecnico tecnico) async {
     final database = await _databaseService.database;
-
-    final dados = tecnico.toMap();
-    dados.remove('id');
+    final dados = tecnico.toMap()..remove('id');
 
     return database.insert(
       tabela,
@@ -22,42 +20,15 @@ class TecnicoRepository {
     );
   }
 
-  Future<List<Tecnico>> listar({String busca = ''}) async {
+  Future<List<Tecnico>> listar() async {
     final database = await _databaseService.database;
-
-    List<Map<String, dynamic>> resultado;
-
-    if (busca.trim().isEmpty) {
-      resultado = await database.query(tabela, orderBy: 'nome ASC');
-    } else {
-      final termo = '%${busca.trim()}%';
-      resultado = await database.query(
-        tabela,
-        where: 'nome LIKE ? OR especialidade LIKE ? OR contato LIKE ?',
-        whereArgs: [termo, termo, termo],
-        orderBy: 'nome ASC',
-      );
-    }
-
-    return resultado.map((map) => Tecnico.fromMap(map)).toList();
-  }
-
-  Future<List<Tecnico>> listarAtivos() async {
-    final database = await _databaseService.database;
-
-    final resultado = await database.query(
-      tabela,
-      where: 'situacao = ?',
-      whereArgs: [SituacaoTecnico.ativo.name],
-      orderBy: 'nome ASC',
-    );
+    final resultado = await database.query(tabela, orderBy: 'nome ASC');
 
     return resultado.map((map) => Tecnico.fromMap(map)).toList();
   }
 
   Future<Tecnico?> buscarPorId(int id) async {
     final database = await _databaseService.database;
-
     final resultado = await database.query(
       tabela,
       where: 'id = ?',
@@ -78,10 +49,7 @@ class TecnicoRepository {
     }
 
     final database = await _databaseService.database;
-
-    final dados = tecnico.toMap();
-
-    dados.remove('id');
+    final dados = tecnico.toMap()..remove('id');
 
     return database.update(
       tabela,
@@ -93,7 +61,6 @@ class TecnicoRepository {
 
   Future<int> excluir(int id) async {
     final database = await _databaseService.database;
-
     return database.delete(tabela, where: 'id = ?', whereArgs: [id]);
   }
 }
