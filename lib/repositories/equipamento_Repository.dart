@@ -11,9 +11,7 @@ class EquipamentoRepository {
 
   Future<int> inserir(Equipamento equipamento) async {
     final database = await _databaseService.database;
-
-    final dados = equipamento.toMap();
-    dados.remove('id');
+    final dados = equipamento.toMap()..remove('id');
 
     return database.insert(
       tabela,
@@ -24,22 +22,8 @@ class EquipamentoRepository {
 
   Future<List<Equipamento>> listar() async {
     final database = await _databaseService.database;
-
     final resultado = await database.query(
       tabela,
-      orderBy: 'marca ASC, modelo ASC',
-    );
-
-    return resultado.map((map) => Equipamento.fromMap(map)).toList();
-  }
-
-  Future<List<Equipamento>> listarPorCliente(int clienteId) async {
-    final database = await _databaseService.database;
-
-    final resultado = await database.query(
-      tabela,
-      where: 'cliente_id = ?',
-      whereArgs: [clienteId],
       orderBy: 'marca ASC, modelo ASC',
     );
 
@@ -48,7 +32,6 @@ class EquipamentoRepository {
 
   Future<Equipamento?> buscarPorId(int id) async {
     final database = await _databaseService.database;
-
     final resultado = await database.query(
       tabela,
       where: 'id = ?',
@@ -69,9 +52,7 @@ class EquipamentoRepository {
     }
 
     final database = await _databaseService.database;
-
-    final dados = equipamento.toMap();
-    dados.remove('id');
+    final dados = equipamento.toMap()..remove('id');
 
     return database.update(
       tabela,
@@ -83,7 +64,6 @@ class EquipamentoRepository {
 
   Future<int> excluir(int id) async {
     final database = await _databaseService.database;
-
-    return database.delete('equipamentos', where: 'id = ?', whereArgs: [id]);
+    return database.delete(tabela, where: 'id = ?', whereArgs: [id]);
   }
 }
