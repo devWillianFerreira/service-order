@@ -16,7 +16,7 @@
   </a>
   +
   <a href="https://dart.dev/" title="Dart">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Dart-logo.png" alt="Dart" height="24px">
+    <img src="https://commons.wikimedia.org/wiki/File:Google-flutter-logo.svg#/media/File:Google-flutter-logo.svg" alt="Dart" height="24px">
   </a>
   +
   <a href="https://www.sqlite.org/" title="SQLite">
