@@ -159,7 +159,7 @@ ordem_servico/
 Clone o repositório do GitHub:
 
 ```bash
-git clone https://github.com/SEU-USUARIO/ordem_servico.git
+git clone https://github.com/devWillianFerreira/service-order.git
 cd ordem_servico
 ```
 
