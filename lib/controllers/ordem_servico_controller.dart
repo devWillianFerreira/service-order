@@ -40,7 +40,6 @@ class OrdemServicoController extends ChangeNotifier {
   bool get carregando => _carregando;
   String? get errorMessage => _errorMessage;
 
-  // Indicadores para o Dashboard
   int get quantidadeOrdens => _ordensServico.length;
   int get quantidadeAbertas => _ordensServico
       .where((os) => os.status == StatusOrdemServico.aberta)
