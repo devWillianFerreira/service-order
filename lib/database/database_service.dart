@@ -87,6 +87,7 @@ class DatabaseService {
         diagnostico TEXT ,
         solucao TEXT ,
         valor_mao_de_obra REAL NOT NULL DEFAULT 0,
+        foto_path TEXT,
         FOREIGN KEY (cliente_id)
           REFERENCES clientes(id)
           ON DELETE RESTRICT,

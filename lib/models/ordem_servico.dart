@@ -21,6 +21,7 @@ class OrdemServico {
   final String solucao;
 
   final double valorMaoDeObra;
+  final String? fotoPath;
 
   const OrdemServico({
     this.id,
@@ -36,6 +37,7 @@ class OrdemServico {
     this.diagnostico = '',
     this.solucao = '',
     this.valorMaoDeObra = 0.0,
+    this.fotoPath,
   });
 
   bool get ordemAtrasada {
@@ -61,6 +63,7 @@ class OrdemServico {
       'diagnostico': diagnostico,
       'solucao': solucao,
       'valor_mao_de_obra': valorMaoDeObra,
+      'foto_path': fotoPath,
     };
   }
 
@@ -81,6 +84,7 @@ class OrdemServico {
       diagnostico: map['diagnostico'] as String? ?? '',
       solucao: map['solucao'] as String? ?? '',
       valorMaoDeObra: (map['valor_mao_de_obra'] as num?)?.toDouble() ?? 0.0,
+      fotoPath: map['foto_path'] as String?,
     );
   }
 
@@ -98,6 +102,7 @@ class OrdemServico {
     String? diagnostico,
     String? solucao,
     double? valorMaoDeObra,
+    String? fotoPath,
   }) {
     return OrdemServico(
       id: id ?? this.id,
@@ -113,6 +118,7 @@ class OrdemServico {
       diagnostico: diagnostico ?? this.diagnostico,
       solucao: solucao ?? this.solucao,
       valorMaoDeObra: valorMaoDeObra ?? this.valorMaoDeObra,
+      fotoPath: fotoPath ?? this.fotoPath,
     );
   }
 }
