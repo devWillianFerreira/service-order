@@ -212,9 +212,10 @@ Após iniciar a aplicação, será apresentada a tela de login.
 
 Para acessar o sistema, utilize as credenciais de demonstração:
 
-Campo	Credencial
-E-mail	admin@gmail.com
-Senha	admin123
+| Email             | Senha                                                                    |
+| ------------------| ------------------------------------------------------------------------ |
+| **Email**         | admin@gmail.com                                                          |
+| **Senha**         | admin123                                                                 |
 
 Após informar as credenciais, clique no botão de login para acessar o sistema.
 
