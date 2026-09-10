@@ -206,7 +206,19 @@ flutter run -d windows
 
 ---
 
-### 5. Executar no Android
+### 5. Acessar o sistema
+
+Após iniciar a aplicação, será apresentada a tela de login.
+
+Para acessar o sistema, utilize as credenciais de demonstração:
+
+Campo	Credencial
+E-mail	admin@gmail.com
+Senha	admin123
+
+Após informar as credenciais, clique no botão de login para acessar o sistema.
+
+### 6. Executar no Android
 
 Com um dispositivo físico conectado ou um emulador iniciado, execute:
 
