@@ -222,7 +222,7 @@ Após informar as credenciais, clique no botão de login para acessar o sistema.
 
 Com um dispositivo físico conectado ou um emulador iniciado, 
 
-execute:
+Execute:
 
 ```bash
 flutter run
