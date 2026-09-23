@@ -128,7 +128,6 @@ Essa organização permite reduzir o acoplamento entre as diferentes partes da a
 ## Estrutura final do projeto
 
 ```text
-```text
 ordem_servico/
 ├── lib/
 │   ├── controllers/               # Controllers e gerenciamento de estado
