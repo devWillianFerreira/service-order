@@ -220,7 +220,9 @@ Após informar as credenciais, clique no botão de login para acessar o sistema.
 
 ### 6. Executar no Android
 
-Com um dispositivo físico conectado ou um emulador iniciado, execute:
+Com um dispositivo físico conectado ou um emulador iniciado, 
+
+execute:
 
 ```bash
 flutter run
