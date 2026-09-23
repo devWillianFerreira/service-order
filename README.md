@@ -232,6 +232,18 @@ Para verificar os dispositivos disponíveis:
 flutter devices
 ```
 
+Para listar os emuladores Android configurados:
+
+```bash
+flutter emulators
+```
+
+Para iniciar um emulador específico:
+
+```bash
+flutter emulators --launch NOME_DO_DISPOSITIVO
+```
+
 Caso necessário, execute o projeto em um dispositivo específico:
 
 ```bash
